@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: stg_album
+    description: >
+      Staging table containing album data from the Spotify API. This table is refreshed
+      on each pipeline execution using a full-refresh strategy (materialized as a table).
+      Each record represents a snapshot of album metadata at the time of extraction.
+    columns:
+      - name: album_id
+        description: "The primary key for this table, representing the unique Spotify ID of the album."
+        data_tests:
+          - unique
+          - not_null
+      - name: attributes
+        description: >
+          A JSON object storing the original album metadata returned by the Spotify API.
+          Typical fields include 'name', 'release_date', 'total_tracks', 'album_type', 'artists', and more.
+      - name: loaded_at
+        description: "The UTC timestamp when the data was extracted and loaded. Useful for tracking the snapshot date."
+
+  - name: stg_artist
+    description: >
+      Staging table containing artist data from the Spotify API. This table is fully refreshed
+      on each run and represents a daily snapshot of the artist metadata at the time of loading.
+    columns:
+      - name: artist_id
+        description: "The primary key for this table, representing the unique Spotify ID of the artist."
+        data_tests:
+          - unique
+          - not_null
+      - name: attributes
+        description: >
+          A JSON object with the original artist metadata returned by the Spotify API.
+          Common fields include 'name', 'genres', 'popularity', 'followers', and 'external_urls'.
+      - name: loaded_at
+        description: "The UTC timestamp of when the snapshot was taken and loaded into the table."
+
+  - name: stg_track
+    description: >
+      Staging table for track data retrieved from the Spotify API. This table is fully refreshed
+      on each pipeline execution and holds a snapshot of the track data at a specific point in time.
+    columns:
+      - name: track_id
+        description: "The primary key for this table, representing the unique Spotify ID of the track."
+        data_tests:
+          - unique
+          - not_null
+      - name: attributes
+        description: >
+          A JSON object containing the raw track metadata returned by the Spotify API.
+          Includes fields such as 'name', 'duration_ms', 'explicit', 'popularity', 'track_number', 'album', and 'artists'.
+      - name: loaded_at
+        description: "The UTC timestamp indicating when the data snapshot was captured and loaded."

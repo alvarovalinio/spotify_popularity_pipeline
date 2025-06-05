@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+
+  airflow-webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY}
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/logs
+      AIRFLOW__CORE__DAG_PROCESSOR_MANAGER_LOG_LOCATION: /opt/airflow/logs/dag_processor_manager/dag_processor_manager.log
+    ports:
+      - "8080:8080"
+    volumes:
+      - "${PWD}/dags:/opt/airflow/dags"
+      - "${PWD}/logs:/opt/airflow/logs"
+      - "${PWD}/requirements/requirements.txt:/requirements.txt"
+      - "${PWD}/data:/opt/airflow/data/"
+      - "${PWD}/dbt:/opt/airflow/dbt"
+    command: >
+      bash -c "
+        pip install -r /requirements.txt &&
+        airflow db migrate &&
+        airflow users create --username $AIRFLOW_USER --firstname Admin --lastname User --role Admin --email $AIRFLOW_EMAIL --password $AIRFLOW_PASSWORD &&
+        airflow webserver
+      "
+
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/logs
+    volumes:
+      - "${PWD}/dags:/opt/airflow/dags"
+      - "${PWD}/logs:/opt/airflow/logs"
+      - "${PWD}/requirements/requirements.txt:/requirements.txt"
+      - "${PWD}/data:/opt/airflow/data/"
+      - "${PWD}/dbt:/opt/airflow/dbt"
+    command: >
+      bash -c "
+        pip install -r /requirements.txt &&
+        airflow db migrate &&
+        airflow scheduler
+      "
+
+  airflow-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__CORE__BASE_LOG_FOLDER: /opt/airflow/logs
+    volumes:
+      - "${PWD}/dags:/opt/airflow/dags"
+      - "${PWD}/logs:/opt/airflow/logs"
+      - "${PWD}/requirements/requirements.txt:/requirements.txt"
+      - "${PWD}/data:/opt/airflow/data/"
+      - "${PWD}/dbt:/opt/airflow/dbt"
+    command: >
+      bash -c "
+        pip install -r /requirements.txt &&
+        airflow worker
+      "
+
+volumes:
+  postgres-db-volume:
+  logs:

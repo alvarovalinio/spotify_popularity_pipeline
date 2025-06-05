@@ -1,0 +1,6 @@
+spotify_popularity:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: '../../data/spotify.duckdb'

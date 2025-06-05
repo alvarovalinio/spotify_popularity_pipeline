@@ -1,0 +1,12 @@
+artists:
+  - name: 'Bad Bunny'
+    id: 4q3ewBCX7sLwd24euuV69X
+  - name: 'Dua Lipa'
+    id: 6M2wZ9GZgrQXHCFfjv46we
+  - name: 'Parcels'
+    id: 3oKRxpszQKUjjaHz388fVA
+  - name: 'Red Hot Chili Peppers'
+    id: 0L8ExT028jH3ddEcZwqJJ5
+  - name: 'Oasis'
+    id: 2DaxqgrOhkeH0fpeiQq2f4
+raw_data_path: './data/raw/'

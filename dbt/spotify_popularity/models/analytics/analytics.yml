@@ -1,0 +1,127 @@
+version: 2
+
+models:
+  - name: dim_album
+    description: >
+      Dimension table containing the latest metadata for each album.
+      This table is updated incrementally, and each record represents the most recent snapshot
+      of the album at the time of ingestion. Historical changes in album data (e.g., popularity)
+      are tracked in the snapshot schema.
+    columns:
+      - name: album_id
+        description: "Unique identifier for the album, provided by Spotify."
+        data_tests:
+          - unique
+          - not_null
+      - name: album_name
+        description: "The name of the album."
+      - name: album_type
+        description: "Type of album, such as 'album', 'single', or 'compilation'."
+      - name: released_at_year
+        description: "Year the album was released."
+      - name: total_tracks
+        description: "The total number of tracks in the album."
+        data_tests:
+          - strictly_positive
+      - name: popularity
+        description: >
+          The latest popularity score of the album at ingestion time (0–100).
+          Previous values are stored in the album snapshot table.
+        data_tests:
+          - strictly_positive
+
+  - name: dim_artist
+    description: >
+      Dimension table containing the latest metadata for each artist.
+      This table keeps only the most recent state of each artist record. Historical
+      data, such as changes in popularity or follower count, are preserved in the snapshot schema.
+    config:
+      unique_key: artist_id
+    columns:
+      - name: artist_id
+        description: "Unique identifier for the artist, provided by Spotify."
+        data_tests:
+          - unique
+          - not_null
+      - name: artist_name
+        description: "The name of the artist."
+      - name: genres
+        description: "List of genres associated with the artist."
+      - name: followers
+        description: >
+          Number of followers at the time of ingestion (latest version only).
+          Historical changes are tracked in the snapshot schema.
+        data_tests:
+          - strictly_positive
+      - name: popularity
+        description: >
+          Latest popularity score of the artist at the time of ingestion (0–100).
+          Full change history is available in the artist snapshot table.
+        data_tests:
+          - strictly_positive
+
+  - name: dim_track
+    description: >
+      Dimension table containing historical metadata for tracks.
+      This table is incrementally loaded and maintains multiple versions of each track,
+      allowing you to analyze how attributes evolve over time.
+    config:
+      unique_key: track_id
+    columns:
+      - name: track_id
+        description: "Unique identifier for the track, provided by Spotify."
+        data_tests:
+          - unique
+          - not_null
+      - name: track_name
+        description: "The name of the track."
+      - name: duration_ms
+        description: "Duration of the track in milliseconds."
+        data_tests:
+          - strictly_positive
+      - name: is_explicit
+        description: "Boolean flag indicating whether the track contains explicit content."
+
+  - name: fact_track_popularity
+    description: >
+      Fact table capturing the popularity of tracks over time.
+      This table is incrementally loaded and stores one record per track per ingestion timestamp,
+      enabling temporal analysis and trend evaluation.
+    config:
+      unique_key: track_popularity_id
+    columns:
+      - name: track_popularity_id
+        description: "Surrogate primary key identifying each track popularity record."
+        data_tests:
+          - unique
+          - not_null
+      - name: track_id
+        description: "Track whose popularity is being measured."
+        data_tests:
+          - relationships:
+              to: ref('dim_track')
+              field: track_id
+      - name: album_id
+        description: "Album associated with the track."
+        data_tests:
+          - relationships:
+              to: ref('dim_album')
+              field: album_id
+      - name: artist_id
+        description: "Main artist of the track."
+        data_tests:
+          - relationships:
+              to: ref('dim_artist')
+              field: artist_id
+      - name: loaded_at
+        description: "Timestamp when the data was ingested. Used to track changes over time."
+      - name: popularity
+        description: "Popularity score of the track (0–100) at ingestion time."
+        data_tests:
+          - strictly_positive
+      - name: rank_in_artist
+        description: >
+          Position of the track in the artist’s Top 10 at the time of ingestion.
+          Values range from 1 (most popular) to 10.
+        data_tests:
+          - strictly_positive

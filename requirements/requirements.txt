@@ -1,0 +1,5 @@
+duckdb
+retrying
+pyyaml
+dbt-core
+dbt-duckdb

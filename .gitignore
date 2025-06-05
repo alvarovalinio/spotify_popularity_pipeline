@@ -1,0 +1,16 @@
+**/venv*/
+.env
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+**/logs/
+airflow.cfg
+*.db
+**/.user.yml
+**/target/
+**/dbt_packages/
+**/.dbt/
+.DS_Store
+.vscode/
+*.pid

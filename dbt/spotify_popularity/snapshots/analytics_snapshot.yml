@@ -1,0 +1,17 @@
+snapshots:
+  - name: dim_album_snapshot
+    relation: ref('dim_album')
+    config:
+      schema: snapshots
+      unique_key: album_id
+      strategy: check
+      check_cols:
+        - popularity
+  - name: dim_artist_snapshot
+    relation: ref('dim_artist')
+    config:
+      schema: snapshots
+      unique_key: artist_id
+      strategy: check
+      check_cols:
+        - popularity
