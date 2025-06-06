@@ -1,12 +1,13 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from datetime import datetime
+from datetime import datetime, timedelta
 from airflow.datasets import Dataset
 
 default_args = {
-    "owner": "airflow",
+    "owner": "avalino",
     "start_date": datetime(2025, 6, 2),
-    "retries": 0,
+    "retries": 1,
+    "retry_delay": timedelta(minutes=1),
 }
 
 BASH_COMMAND = """
