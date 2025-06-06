@@ -3,3 +3,5 @@ retrying
 pyyaml
 dbt-core
 dbt-duckdb
+streamlit
+plotly
