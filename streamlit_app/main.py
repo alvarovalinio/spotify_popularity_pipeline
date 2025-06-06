@@ -1,5 +1,6 @@
 import streamlit as st
 import duckdb
+import os
 from spotify_dashboard.filters import select_filters
 from spotify_dashboard.charts import (
     popularity_trend_chart,
@@ -15,7 +16,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-con = duckdb.connect("../data/spotify.duckdb", read_only=True)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "data", "spotify.duckdb")
+con = duckdb.connect(DB_PATH, read_only=True)
 
 ## SideBar
 selected_date, selected_artists_list = select_filters(con)
