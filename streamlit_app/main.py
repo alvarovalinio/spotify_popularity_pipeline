@@ -37,20 +37,20 @@ st.dataframe(df1, hide_index=True)
 sql = load_sql("album_popularity.sql").format(
     selected_date=selected_date, selected_artists=artist_str
 )
-df3 = con.execute(sql).fetchdf()
+df2 = con.execute(sql).fetchdf()
 st.subheader("Top Albums by popularity")
-st.plotly_chart(album_popularity_chart(df3), use_container_width=True)
+st.plotly_chart(album_popularity_chart(df2), use_container_width=True)
 
 sql = load_sql("distribution.sql").format(
     selected_date=selected_date, selected_artists=artist_str
 )
-df4 = con.execute(sql).fetchdf()
+df3 = con.execute(sql).fetchdf()
 st.subheader("Popularity Distribution")
-st.plotly_chart(distribution_chart(df4), use_container_width=True)
+st.plotly_chart(distribution_chart(df3), use_container_width=True)
 
 sql = load_sql("trend.sql").format(selected_artists=artist_str)
-df2 = con.execute(sql).fetchdf()
+df4 = con.execute(sql).fetchdf()
 st.subheader("Weekly Popularity Evolution")
-st.plotly_chart(popularity_trend_chart(df2), use_container_width=True)
+st.plotly_chart(popularity_trend_chart(df4), use_container_width=True)
 
 st.caption("Data visualized from DuckDB - Spotify Popularity Project")
