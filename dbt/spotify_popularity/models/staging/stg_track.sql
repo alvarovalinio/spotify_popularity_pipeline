@@ -14,7 +14,7 @@ SELECT
   track_id,
   CAST(attributes AS JSON) AS attibutes,
   CAST(custom_attributes AS JSON) AS custom_attibutes,
-  loaded_at
+  CAST(loaded_at AS DATE) AS loaded_at
 FROM raw_track
 
 
