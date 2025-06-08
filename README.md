@@ -69,7 +69,4 @@ The analytics layer follows a **star schema**, with a central fact table `fact_t
 - `dim_album`
 - `dim_track`
 
-📌 You can add a diagram here:
-
-```markdown
-![Data model diagram](images/dimensional_model.png)
+![Dimensional Model](images/dimensional_model.png)
