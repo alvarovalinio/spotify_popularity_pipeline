@@ -30,7 +30,7 @@ All data is stored and queried using **DuckDB**, enabling fast analytical querie
 |----------------|-----------------------------------------------------------------------------|
 | Airflow        | Orchestrates ingestion and transformation tasks. A DAG with a **Dataset dependency** ensures `dbt build` runs only after ingestion is complete. |
 | DBT            | Handles data modeling, including **custom tests** and **snapshots** for tracking historical changes. |
-| Python + pytest| Ingestion logic is tested with **unit tests using pytest**. |
+| Python         | Ingestion logic is tested with **unit tests using pytest**. |
 | Streamlit      | Simple web app to visualize track popularity trends over time.              |
 | DuckDB         | In-process OLAP database used for all data storage and transformations.     |
 
