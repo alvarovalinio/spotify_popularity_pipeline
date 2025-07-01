@@ -11,7 +11,7 @@ FROM read_csv(
 
 SELECT
   artist_id,
-  CAST(attributes AS JSON) AS attibutes,
+  CAST(attributes AS JSON) AS attributes,
   CAST(loaded_at AS DATE) AS loaded_at
 FROM raw_artist
 

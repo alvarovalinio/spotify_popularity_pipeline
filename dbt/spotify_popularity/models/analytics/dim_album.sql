@@ -3,11 +3,11 @@
 WITH tmp_dim_album AS (
 SELECT
   album_id,
-  CAST(attibutes.name AS VARCHAR) AS album_name,
-  CAST(attibutes.album_type AS VARCHAR) AS album_type,
-  CAST(attibutes.release_date AS VARCHAR) AS released_at,
-  CAST(attibutes.total_tracks AS INT) AS total_tracks,
-  CAST(attibutes.popularity AS INT) AS popularity
+  CAST(attributes.name AS VARCHAR) AS album_name,
+  CAST(attributes.album_type AS VARCHAR) AS album_type,
+  CAST(attributes.release_date AS VARCHAR) AS released_at,
+  CAST(attributes.total_tracks AS INT) AS total_tracks,
+  CAST(attributes.popularity AS INT) AS popularity
 FROM {{ ref('stg_album') }}
 )
 

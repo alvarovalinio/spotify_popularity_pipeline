@@ -1,11 +1,11 @@
 WITH tmp_fact_track_popularity AS (
 SELECT 
   track_id,
-  CAST(attibutes.album.id AS VARCHAR) AS album_id,
-  CAST(attibutes.artists AS JSON[]) AS artists,
+  CAST(attributes.album.id AS VARCHAR) AS album_id,
+  CAST(attributes.artists AS JSON[]) AS artists,
   loaded_at,
-  CAST(attibutes.popularity AS INT) AS popularity,
-  CAST(custom_attibutes.rank_in_artist AS INT) rank_in_artist
+  CAST(attributes.popularity AS INT) AS popularity,
+  CAST(custom_attributes.rank_in_artist AS INT) rank_in_artist
 FROM {{ ref('stg_track') }}
 ), 
 tmp_distinct_artist_ids AS (

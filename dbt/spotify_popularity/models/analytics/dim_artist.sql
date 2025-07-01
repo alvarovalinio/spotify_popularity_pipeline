@@ -1,10 +1,10 @@
 WITH tmp_dim_artist AS (
 SELECT 
   artist_id,
-  CAST(attibutes.name AS VARCHAR) AS artist_name,
-  CAST(attibutes.genres AS VARCHAR[]) AS genres,
-  CAST(attibutes.followers.total AS INT) AS followers,
-  CAST(attibutes.popularity AS INT) AS popularity
+  CAST(attributes.name AS VARCHAR) AS artist_name,
+  CAST(attributes.genres AS VARCHAR[]) AS genres,
+  CAST(attributes.followers.total AS INT) AS followers,
+  CAST(attributes.popularity AS INT) AS popularity
 FROM {{ ref('stg_artist') }}
   )
 

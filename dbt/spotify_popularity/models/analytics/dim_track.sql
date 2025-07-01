@@ -1,9 +1,9 @@
 WITH tmp_dim_track AS (
 SELECT
   track_id,
-  CAST(attibutes.name AS VARCHAR) AS track_name,
-  CAST(attibutes.duration_ms AS INT) AS duration_ms,
-  CAST(attibutes.explicit AS BOOLEAN) AS is_explicit
+  CAST(attributes.name AS VARCHAR) AS track_name,
+  CAST(attributes.duration_ms AS INT) AS duration_ms,
+  CAST(attributes.explicit AS BOOLEAN) AS is_explicit
 FROM {{ ref('stg_track') }} 
 )
 
