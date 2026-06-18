@@ -1,7 +1,10 @@
-duckdb
+#https://raw.githubusercontent.com/apache/airflow/constraints-2.11.1/constraints-3.12.txt
+duckdb==1.4.4
 retrying
-pyyaml
+pyyaml==6.0.3
 dbt-core
 dbt-duckdb
 streamlit
 plotly
+pandas==2.1.4
+pyarrow==22.0.0
