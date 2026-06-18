@@ -23,9 +23,14 @@ with DAG(
     tags=["SPOTIFY", "DBT", "STAGING", "ANALYTICS"],
 ) as dag:
 
+    dbt_deps = BashOperator(
+        task_id="dbt_deps",
+        bash_command="cd /opt/airflow/dbt/spotify_popularity && dbt deps",
+    )
+
     dbt_build = BashOperator(
         task_id="dbt_build",
         bash_command=BASH_COMMAND,
     )
 
-    dbt_build
+    dbt_deps >> dbt_build
